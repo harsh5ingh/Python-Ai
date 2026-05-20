@@ -1,5 +1,3 @@
-# Chain of Thought Prompting
-
 import sys
 from pathlib import Path
 
@@ -13,6 +11,7 @@ import requests
 from colorama import Fore
 
 import json
+
 load_dotenv()
 
 client = OpenAI(
@@ -48,8 +47,9 @@ SYSTEM_PROMPT = """
 
    Rules:
    - Strictly follow the given JSON output format
-   - Only run onw step at a time.
+   - Only run one step at a time.
    - The sequence of steps is START ( where user gives an input), PLAN (which is going to the displayed to the user).
+   - User is on Windows.
 
    Output JSON format:
    { "step": "START" | "PLAN" | "OUTPUT" | "TOOL" | "OBSERVE", "content": "string", "tool": "string", "input": "string", "output": "string" }
