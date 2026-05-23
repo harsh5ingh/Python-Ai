@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from pathlib import Path
+import os
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
@@ -16,8 +17,8 @@ docs = loader.load()
 
 # Split the docs into smaller chunks
 text_splitter = RecursiveCharacterTextSplitter(
-  chunk_size = 1000,
-  chunk_overlap = 400
+  chunk_size = 500,
+  chunk_overlap = 100
 )
 
 chunks = text_splitter.split_documents(documents=docs)
@@ -28,10 +29,14 @@ embedding_model = NVIDIAEmbeddings(
 )
 
 vector_store = QdrantVectorStore.from_documents(
-  documents=chunks,
-  embedding=embedding_model,
-  url="http://localhost:6333",
-  collection_name= "learning_rag"
+    documents=chunks,
+      embedding=embedding_model,
+      url=os.getenv("QDRANT_URL"),
+      api_key=os.getenv("QDRANT_API_KEY"),
+      collection_name="learning_rag",
+      batch_size=5,
+      timeout=120,
+      force_recreate=True,
 )
 
 print("Indexing of documents done.....")
