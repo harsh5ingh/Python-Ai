@@ -38,4 +38,4 @@ config = {
   }
 }
 
-mem_client = Memory.from_config(config)
+mem_client = Memory.from_config(config))
